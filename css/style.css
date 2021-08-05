@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../assets/fonts/nunito-sans-v6-latin-regular.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url(../assets/fonts/open-sans-v21-latin-600.woff2) format('woff2');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans';
+}
+
+#journal {
+  font-family: 'Nunito Sans';
+}
+
+button {
+  min-width: 48px;
+  background-color: white;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+  margin-left: 1.25rem;
+  cursor: pointer;
+  font: inherit;
+  transition-property: color, background-color, box-shadow;
+  transition: 0.5s ease;
+}
+
+#add:hover {
+  background-color: rgba(3, 102, 214, 0.3);
+}
+
+#edit {
+  box-shadow: #faea76 0px 0px 0px 3px;
+}
+
+#edit:hover {
+  background-color: #faea76;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
