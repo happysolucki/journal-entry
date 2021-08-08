@@ -58,7 +58,7 @@ const editJournalEntry = () => {
       parseInt(idx) - 1 < 0 ||
       parseInt(idx) - 1 >= journalEntries.length
     ) {
-      let idx = prompt(
+      idx = prompt(
         `The number you entered is out of range.\nEnter the number that corresponds to the entry you want to alter.\nAvailable numbers are 1 through ${journalEntries.length}.`
       );
       // check for prompt cancel or 'quit'
@@ -105,6 +105,96 @@ const editJournalEntry = () => {
   }
 };
 
+const isRequired = (value) => value === '' ? false : true;
+const isValid = (value) => ["EASY","MEDIUM","HARD"].includes(value.toUpperCase());
+const isBetween = (num, min, max) => num - 1 < min || num > max ? false : true;
+
+// const addJournalEntryForm = (e) => {
+//   e.preventDefault();
+// 
+//   const validConfidence = ["EASY", "MEDIUM", "HARD"];
+//   const date = e.target.date.value.trim();
+//   const confidence = e.target.confidence.value.trim();
+//   const contents = e.target.content.value.trim();
+// 
+// }
+
+const dateAddEl = document.querySelector('#add-date');
+const confidenceAddEl = document.querySelector('#add-confidence');
+const contentsAddEl = document.querySelector('#add-content');
+const indexEditEl = document.querySelector('#edit-index');
+const dateEditEl = document.querySelector('#edit-date');
+const confidenceEditEl = document.querySelector('#edit-confidence');
+const contentsEditEl = document.querySelector('#edit-content');
+
+const checkDate = (el) => {
+  let valid = false;
+  const date = el.value.trim();
+  if (!isRequired(date)) {
+    showError(el, 'Date cannot be blank.')
+  } else {
+    showSuccess(el);
+    valid = true
+  }
+  return valid;
+}
+
+const checkConfidence = (el) => {
+  let valid = false;
+  const confidence = el.value.trim();
+  if (!isValid(confidence)) {
+    showError(el, 'Choose easy, medium, or hard.')
+  } else {
+    showSuccess(el);
+    valid = true
+  }
+  return valid;
+}
+
+const checkContents = (el) => {
+  let valid = false;
+  const contents = el.value.trim();
+  if (!isRequired(contents)) {
+    showError(el, 'Contents cannot be blank.')
+  } else {
+    showSuccess(el);
+    valid = true;
+  }
+  return valid;
+}
+
+const checkIndex = () => {
+  let valid = false;
+  const index = indexEditEl.value.trim();
+  if(!isBetween(parseInt(index), 0, journalEntries.length)) {
+    showError(indexEditEl, 'Index is out of range');
+  } else {
+    showSuccess(indexEditEl);
+    valid = true;
+  }
+  return valid;
+}
+
+const showError = (input, message) => {
+  const formField = input.parentElement;
+
+  input.classList.remove('success');
+  input.classList.add('error')
+
+  const error = formField.querySelector('small');
+  error.textContent = message;
+}
+
+const showSuccess = (input) => {
+  const formField = input.parentElement;
+
+  input.classList.remove('error');
+  input.classList.add('success');
+
+  const error = formField.querySelector('small');
+  error.textContent = '';
+}
+
 const createJournalEntries = () => {
   const journalContainer = document.querySelector("#journal");
   journalContainer.innerHTML = "";
@@ -137,19 +227,108 @@ const logJournalEntries = () => {
   }
 };
 
-const journalProcess = () => {
-  addJournalEntry();
-  logJournalEntries();
-  createJournalEntries();
-};
-
-const editJournalProcess = () => {
-  editJournalEntry();
-  logJournalEntries();
-  createJournalEntries();
-};
+// const journalProcess = () => {
+//   addJournalEntry();
+//   logJournalEntries();
+//   createJournalEntries();
+// };
+// 
+// const editJournalProcess = () => {
+//   editJournalEntry();
+//   logJournalEntries();
+//   createJournalEntries();
+// };
 
 const journalButton = document.querySelector("#add");
+const addFormContainer = document.querySelector("#add-form");
 const editJournalButton = document.querySelector("#edit");
-journalButton.addEventListener("click", journalProcess);
-editJournalButton.addEventListener("click", editJournalProcess);
+const editFormContainer = document.querySelector("#edit-form");
+journalButton.addEventListener("click", (e) => {
+  addFormContainer.classList.remove('hide');
+});
+editJournalButton.addEventListener("click", (e) => {
+  editFormContainer.classList.remove('hide');
+});
+
+const addForm = document.querySelector('#add-entry');
+addForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  let isDateValid = checkDate(dateAddEl);
+  let isConfidenceValid = checkConfidence(confidenceAddEl);
+  let isContentValid = checkContents(contentsAddEl);
+
+  let isFormValid = isDateValid && isConfidenceValid && isContentValid;
+
+  if (isFormValid) {
+    let userJournal = new JournalEntry(dateAddEl.value.trim(), confidenceAddEl.value.trim(), contentsAddEl.value.trim());
+    addFormContainer.classList.add('hide');
+    journalEntries.push(userJournal);
+    createJournalEntries();
+    logJournalEntries();
+  }
+});
+
+const editForm = document.querySelector('#edit-entry');
+editForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  let isIndexValid = checkIndex();
+  let isDateValid = checkDate(dateEditEl);
+  let isConfidenceValid = checkConfidence(confidenceEditEl);
+  let isContentValid = checkContents(contentsEditEl);
+
+  let isFormValid = isIndexValid && isDateValid && isConfidenceValid && isContentValid;
+
+  if (isFormValid) {
+    let userJournal = new JournalEntry(dateEditEl.value.trim(), confidenceEditEl.value.trim(), contentsEditEl.value.trim());
+    editFormContainer.classList.add('hide');
+    journalEntries[parseInt(indexEditEl.value.trim()) - 1] = userJournal;
+    createJournalEntries();
+    logJournalEntries();
+  }
+});
+
+const debounce = (fn, delay = 500) => {
+  let timeoutId;
+  return(...args) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(() => {
+      fn.apply(null, args)
+    }, delay);
+  }
+}
+
+addForm.addEventListener('input', debounce(function (e) {
+  switch (e.target.id) {
+    case 'add-date':
+      checkDate(dateAddEl);
+      break;
+    case 'add-confidence':
+      checkConfidence(confidenceAddEl);
+      break;
+    case 'add-content':
+      checkContents(contentsAddEl);
+      break
+  }
+}));
+
+editForm.addEventListener('input', debounce(function (e) {
+  switch (e.target.id) {
+    case 'edit-index':
+      checkIndex();
+      break;
+    case 'edit-date':
+      checkDate(dateEditEl);
+      break;
+    case 'edit-confidence':
+      checkConfidence(confidenceEditEl);
+      break;
+    case 'edit-content':
+      checkContents(contentsEditEl);
+      break
+  }
+}));

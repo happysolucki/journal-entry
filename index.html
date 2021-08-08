@@ -13,6 +13,57 @@
       <button id="add">Add</button>
       <button id="edit">Edit</button>
     </section>
+    <section id="add-form" class="form-container hide">
+      <h4>Add a journal Entry</h4>
+      <form id="add-entry" action="" method="GET">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="12/21/2021" name="date" id="add-date" tabindex="1" required>
+          <label for="date" class="form-label">Date</label> 
+          <small></small>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Medium" name="confidence" id="add-confidence" tabindex="2" required>
+          <label for="confidence" class="form-label">Confidence</label> 
+          <small></small>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="My journal contents" name="content" id="add-content" tabindex="3" required>
+          <label for="content" class="form-label">Content</label> 
+          <small></small>
+        </div>
+        <div>
+          <input type="submit" name="submit" value="Submit">
+        </div>
+      </form>    
+    </section> 
+    <section id="edit-form" class="form-container hide">
+      <h4>Edit a journal Entry</h4>
+      <form id="edit-entry" action="" method="GET">
+        <div class="form-group">
+          <input type="number" class="form-control" placeholder="1" name="index" id="edit-index" tabindex="1" required>
+          <label for="index" class="form-label">Index</label> 
+          <small></small>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="12/21/2021" name="date" id="edit-date" tabindex="2" required>
+          <label for="date" class="form-label">Date</label> 
+          <small></small>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Medium" name="confidence" id="edit-confidence" tabindex="3" required>
+          <label for="confidence" class="form-label">Confidence</label> 
+          <small></small>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="My journal contents" name="content" id="edit-content" tabindex="4" required>
+          <label for="content" class="form-label">Content</label> 
+          <small></small>
+        </div>
+        <div>
+          <input type="submit" name="submit" value="Submit">
+        </div>
+      </form>    
+    </section> 
     <script src="./js/main.js"></script>
   </body>
 </html>

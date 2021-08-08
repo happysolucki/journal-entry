@@ -28,10 +28,18 @@ body {
   font-family: "Nunito Sans";
 }
 
+section {
+  margin-bottom: 20px;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
+}
+
+h4 {
+  margin-bottom: 2.75em;
 }
 
 button {
@@ -68,6 +76,84 @@ button {
   background-color: #faea76;
 }
 
+#edit-form {
+  background-color: #faea76;
+}
+
 .capitalize {
   text-transform: capitalize;
+}
+
+.form-container {
+  width: 400px;
+  padding: 0.75rem 1.5rem;
+  /* background-color: blue; */
+  background-color: rgba(3, 102, 214, 0.3);
+  border-radius: 25px;
+}
+
+.form-group {
+  margin-bottom: 1.5em;
+  transition: all .3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 1em;
+  color: #fefefe;
+  display: inline-block;
+  opacity: 1;
+  transform: translateY(-1.65em);
+  transform-origin: 0 0;
+  transition: all .3s;
+}
+
+.form-control {
+  box-shadow: none;
+  background-color: rgba(255, 255, 255, 0.22);
+  border-radius: 0px;
+  border-color: #fefefe;
+  border-style: none none solid none;
+  width: 100%;
+  transition: all .5s;
+  padding: 5px;
+  z-index: 5;
+}
+
+.form-control::placeholder {
+  color: transparent;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  outline:none;
+  border-color: orange;
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+  transform: translateY(-3em) scale(0.8);
+}
+
+.form-group:focus-within {
+  transform: scale(1.05);
+}
+
+.error {
+  border-color: red;
+}
+
+.success {
+  border-color: green;
+}
+
+small {
+  position: relative;
+  top: -20px;
+}
+
+.hide {
+  /* visibility: hidden; */
+  display:none;
 }
